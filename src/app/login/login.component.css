@@ -1,8 +1,20 @@
+<<<<<<< HEAD
+=======
+/* Page background */
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: #f8fafc;
+}
+
+/* Wrapper to center the form */
+>>>>>>> origin/main
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
   padding: 20px;
   background: #ffffff;
   font-family: Arial, sans-serif;
@@ -88,4 +100,104 @@
   .login-wrapper form {
     padding: 24px 20px;
   }
+=======
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 20px;
+}
+
+/* Login card */
+.login-wrapper form {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+/* Title */
+.login-wrapper h2 {
+  margin: 0 0 32px;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+/* Labels */
+.login-wrapper label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Inputs */
+.login-wrapper input {
+  margin-top: 8px;
+  padding: 12px 16px;
+  font-size: 0.9375rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.login-wrapper input:hover {
+  border-color: #cbd5e1;
+}
+
+.login-wrapper input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Button */
+.login-wrapper button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  letter-spacing: 0.01em;
+}
+
+.login-wrapper button:hover:not(:disabled) {
+  background: #1d4ed8;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.login-wrapper button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.login-wrapper button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Footer text */
+.login-wrapper p {
+  margin-top: 24px;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: #64748b;
+  line-height: 1.5;
+>>>>>>> origin/main
 }

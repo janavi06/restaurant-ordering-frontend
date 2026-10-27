@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// login.component.ts - Simplified
+>>>>>>> origin/main
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -55,6 +59,7 @@ import { AuthService } from '../services/auth.service';
       </div>
     </div>
   `,
+<<<<<<< HEAD
 styles: [`
   .login-container {
     display: flex;
@@ -168,6 +173,69 @@ styles: [`
     }
   }
 `]
+=======
+  styles: [`
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #ffffffff 100%);
+      padding: 20px;
+    }
+    .login-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .login-btn:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    .error-message {
+      color: #dc3545;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .login-links {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .login-links a {
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  `]
+>>>>>>> origin/main
 })
 export class LoginComponent {
   email = '';
@@ -188,6 +256,10 @@ export class LoginComponent {
       next: (response) => {
         this.isLoading = false;
         
+<<<<<<< HEAD
+=======
+        // Get restaurant ID from auth service (comes from backend via JWT)
+>>>>>>> origin/main
         const userRestaurantId = this.auth.restaurantId;
         
         if (!userRestaurantId) {
@@ -209,7 +281,12 @@ export class LoginComponent {
 
 
     let targetRole = userRole;
+<<<<<<< HEAD
   
+=======
+    
+    // Map 'manager' to 'admin' for routing purposes
+>>>>>>> origin/main
     if (userRole === 'manager') {
       targetRole = 'admin';
     }

@@ -30,6 +30,10 @@
 .customization-options{ background:#fff; border-radius:8px; padding:8px; display:flex; flex-direction:column; gap:8px; border:1px solid #f3f5f7 }
 .option-item{ display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px }
 
+<<<<<<< HEAD
+=======
+/* custom radio */
+>>>>>>> origin/main
 .checkmark{ width:16px; height:16px; border-radius:50%; border:2px solid #d1d5db; display:inline-block; position:relative; flex:0 0 16px }
 .option-item input[type="radio"]{ display:none }
 .option-item input[type="radio"]:checked + .checkmark{ border-color:#0b7cff }

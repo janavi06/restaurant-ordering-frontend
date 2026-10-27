@@ -12,6 +12,10 @@ import { AuthService } from '../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomizationModalComponent } from '../customization-modal/customization-modal.component';
 import { HttpParams } from '@angular/common/http';
+<<<<<<< HEAD
+=======
+import { OffersComponent } from '../offers/offers.component';
+>>>>>>> origin/main
 import { TakeawayComponent } from '../takeaway/takeaway.component';
 
 
@@ -58,10 +62,19 @@ export interface Order {
   closedAt?: Date;
   latestPayment?: PaymentInfo;
   kitchenStatus?: KitchenStatus;
+<<<<<<< HEAD
   subtotal?: number;
   discountAmount?: number;
   appliedOfferName?: string;
     appliedOfferID?: number;  
+=======
+
+  // 🔥 ADD THESE
+  subtotal?: number;
+  discountAmount?: number;
+  appliedOfferName?: string;
+    appliedOfferID?: number;   // 🔥 ADD THIS
+>>>>>>> origin/main
 
   totalAmount?: number;
 
@@ -99,7 +112,12 @@ imports: [
   NewOrderComponent,
   QRCodeComponent,
   TakeawayComponent,
+<<<<<<< HEAD
   
+=======
+
+  OffersComponent   // ✅ ADD THIS
+>>>>>>> origin/main
 ],
 })
 export class WaiterComponent implements OnInit {
@@ -188,9 +206,15 @@ markAsPaidModal = {
   orderNumber: 0,
   tableNo: 0,
 
+<<<<<<< HEAD
   totalAmount: 0,     
   paidSoFar: 0,
   remaining: 0,      
+=======
+  totalAmount: 0,     // full order
+  paidSoFar: 0,       // already paid
+  remaining: 0,       // 🔥 USE THIS
+>>>>>>> origin/main
 
   selectedMethod: 'Cash' as 'Cash' | 'UPI',
   busy: false,
@@ -356,7 +380,11 @@ private isFetchingPayments = false;
 
     this.loadRestaurantDetails();
 
+<<<<<<< HEAD
 
+=======
+    // Initialize all data
+>>>>>>> origin/main
     this.getOrders();
     this.getWaiterRequests();
     this.checkForReadyNotifications();
@@ -375,7 +403,11 @@ setInterval(() => {
     !this.showEditOrderModal &&
     !this.markAsPaidModal.open &&
     !this.collectModal.open &&
+<<<<<<< HEAD
     !this.busyCollect   
+=======
+    !this.busyCollect   // 🔥 CRITICAL FIX
+>>>>>>> origin/main
   ) {
     this.getOrders();
   }
@@ -438,8 +470,14 @@ async createInlineOffer(): Promise<void> {
       )
     );
 
+<<<<<<< HEAD
 this.loadAvailableOffersForOrder(this.selectedOrderForEdit.orderID);
 
+=======
+    // 🔥 Refresh offers list
+this.loadAvailableOffersForOrder(this.selectedOrderForEdit.orderID);
+    // 🔥 Auto select new offer
+>>>>>>> origin/main
     setTimeout(() => {
       this.selectedOfferId = newOffer.offerID;
     }, 300);
@@ -470,9 +508,18 @@ resetInlineOffer() {
   }
   private setupRouterEvents(): void {
     this.router.events.subscribe(event => {
+<<<<<<< HEAD
      
       if (event instanceof NavigationStart && this.restaurantId) {
         const currentUrl = event.url;
+=======
+      // If we're navigating away from this component but restaurantId exists,
+      // ensure it's preserved in the URL
+      if (event instanceof NavigationStart && this.restaurantId) {
+        const currentUrl = event.url;
+
+        // If navigating to a different route without restaurantId, add it
+>>>>>>> origin/main
         if (!currentUrl.includes('restaurantId=') && !currentUrl.includes('login')) {
           setTimeout(() => {
             this.updateUrlWithRestaurantId();
@@ -482,7 +529,11 @@ resetInlineOffer() {
     });
   }
   ngOnDestroy(): void {
+<<<<<<< HEAD
 
+=======
+    // Clear all intervals when component is destroyed
+>>>>>>> origin/main
     if (this.notificationCheckInterval) {
       clearInterval(this.notificationCheckInterval);
     }
@@ -491,6 +542,10 @@ resetInlineOffer() {
       clearInterval(this.requestPollingInterval);
     }
 
+<<<<<<< HEAD
+=======
+    // Remove event listener
+>>>>>>> origin/main
     window.removeEventListener('beforeunload', () => {
       this.persistUIState();
     });
@@ -539,6 +594,10 @@ resetInlineOffer() {
   try {
     const orderPayload = {};
 
+<<<<<<< HEAD
+=======
+    // STEP 1: Generate order
+>>>>>>> origin/main
     const response: any = await firstValueFrom(
       this.http.post(
         `${this.API_BASE}/order/generate?restaurantId=${this.restaurantId}&source=waiter&paymentPreference=${paymentPreference}`,
@@ -549,6 +608,10 @@ resetInlineOffer() {
 
     console.log("✅ Order Generated:", response.orderID);
 
+<<<<<<< HEAD
+=======
+    // 🔥 STEP 2: CONFIRM ORDER (THIS FIXES KOT)
+>>>>>>> origin/main
     await firstValueFrom(
       this.http.post(
         `${this.API_BASE}/order/${response.orderID}/confirm?restaurantId=${this.restaurantId}`,
@@ -631,8 +694,16 @@ onNewOrderPlaced(e: {
 }) {
   console.log('New Order placed via Waiter flow:', e);
 
+<<<<<<< HEAD
   this.getOrders();
 
+=======
+  // 1. Refresh orders immediately to get the new order from backend
+  this.getOrders();
+
+  // 2. If it was a 'PayNow' (Paid) order, it might already be marked 'Completed' 
+  // depending on your backend. We switch to the 'orders' section to view it.
+>>>>>>> origin/main
   if (e.paymentPreference === 'PayNow' && e.paymentStatus === 'paid') {
     this.selectedSection = 'orders';
     this.pushAlert('order', `Order #${e.orderID} paid and confirmed!`);
@@ -643,7 +714,11 @@ onNewOrderPlaced(e: {
 }
 onNewOrderClosed() {
   this.selectedSection = 'orders';
+<<<<<<< HEAD
 
+=======
+  // Force a data sync whenever the 'New Order' screen is closed
+>>>>>>> origin/main
   this.getOrders();
   this.fetchPendingPayments();
 }

@@ -1,5 +1,9 @@
 <div class="reports-container">
 
+<<<<<<< HEAD
+=======
+  <!-- NAVIGATION -->
+>>>>>>> origin/main
   <div class="reports-navbar">
     <button (click)="setSection('overview')" [class.active]="activeSection==='overview'">Dashboard</button>
     <button (click)="setSection('live')" [class.active]="activeSection==='live'">Live Monitor</button>
@@ -7,7 +11,11 @@
     <button (click)="setSection('categories')" [class.active]="activeSection==='categories'">Menu Analytics</button>
   </div>
 
+<<<<<<< HEAD
 
+=======
+  <!-- OVERVIEW -->
+>>>>>>> origin/main
   <section *ngIf="activeSection === 'overview'" class="dashboard-grid">
 <div class="filter-bar mb-3">
   <label>Order Type:</label>
@@ -72,7 +80,12 @@
     </div>
   </section>
 
+<<<<<<< HEAD
 
+=======
+  <!-- PAST ORDERS -->
+ <!-- PAST ORDERS -->
+>>>>>>> origin/main
 <section *ngIf="activeSection === 'past'" class="table-box">
 
   <div class="export-bar mb-3">
@@ -95,7 +108,12 @@
       <tr>
         <th>Order #</th>
         <th>Date</th>
+<<<<<<< HEAD
             <th>Type</th> 
+=======
+            <th>Type</th> <!-- 🔥 NEW -->
+
+>>>>>>> origin/main
         <th>Table</th>
         <th>Status</th>
         <th>Total (Net)</th>
@@ -148,7 +166,11 @@
     </tbody>
   </table>
 </section>
+<<<<<<< HEAD
 
+=======
+<!-- ORDER SUMMARY MODAL -->
+>>>>>>> origin/main
 <div class="modal-overlay" *ngIf="selectedOrder">
 
   <div class="modal-box large">
@@ -158,6 +180,11 @@
       <button class="btn-close" (click)="closeOrderModal()">✖</button>
     </div>
 
+<<<<<<< HEAD
+=======
+    <!-- BASIC INFO -->
+<!-- BASIC INFO -->
+>>>>>>> origin/main
 <div class="mb-3">
   <strong>Date:</strong> {{ selectedOrder.date | date:'short' }} <br>
   <strong>Order Type:</strong> {{ selectedOrder.orderType }} <br>
@@ -165,6 +192,10 @@
   <strong>Status:</strong> {{ selectedOrder.status }}
 </div>
 
+<<<<<<< HEAD
+=======
+    <!-- ITEMS -->
+>>>>>>> origin/main
     <h5>Items</h5>
     <div class="order-items mb-3">
 
@@ -191,6 +222,10 @@
       </div>
     </div>
 
+<<<<<<< HEAD
+=======
+    <!-- BILL SUMMARY -->
+>>>>>>> origin/main
     <hr>
 
     <h5>Bill Summary</h5>
@@ -212,6 +247,22 @@
 
     <hr>
 
+<<<<<<< HEAD
+=======
+<!-- PAYMENT DETAILS -->
+<!-- <h5>Payment Details</h5>
+
+<div class="summary-line">
+  <span>Cash Paid</span>
+  <span>₹{{ selectedOrder.cashPaid | number:'1.2-2' }}</span>
+</div>
+
+<div class="summary-line">
+  <span>UPI Paid</span>
+  <span>₹{{ selectedOrder.upiPaid | number:'1.2-2' }}</span>
+</div> -->
+
+>>>>>>> origin/main
 <hr>
 
 <div class="summary-line total">
@@ -231,7 +282,11 @@
 
 <hr>
 
+<<<<<<< HEAD
 
+=======
+<!-- Detailed Payments -->
+>>>>>>> origin/main
 <div *ngIf="selectedOrder.payments?.length">
 
   <h6 class="mt-2">Payment Records</h6>

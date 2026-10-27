@@ -107,6 +107,10 @@ reloadActiveSection() {
   }
 openOrderModal(order: any) {
 
+<<<<<<< HEAD
+=======
+  // Calculate gross & discount safely
+>>>>>>> origin/main
   const grossTotal = (order.items ?? [])
     .reduce((sum: number, i: any) => sum + (i.originalPrice || 0), 0);
 
@@ -139,7 +143,11 @@ closeOrderModal() {
     this.loadPastOrders();
   }
 
+<<<<<<< HEAD
 
+=======
+  /* ========== Overview ========== */
+>>>>>>> origin/main
   loadOverview() {
     this.loading = true;
 this.http.get<any>(
@@ -156,13 +164,21 @@ this.http.get<any>(
 
   private calculateExtraMetrics() {
     if (this.overview.totalOrders > 0) {
+<<<<<<< HEAD
 
+=======
+      // defensive rounding
+>>>>>>> origin/main
       this.overview.avgOrderValue = Math.round((this.overview.totalRevenue || 0) / (this.overview.totalOrders || 1));
     } else {
       this.overview.avgOrderValue = 0;
     }
   }
 
+<<<<<<< HEAD
+=======
+  /* ========== Live Orders ========== */
+>>>>>>> origin/main
   loadLiveOrders() {
     this.loading = true;
 this.http.get<any[]>(
@@ -174,6 +190,10 @@ this.http.get<any[]>(
       });
   }
 
+<<<<<<< HEAD
+=======
+  /* ========== Sales ========== */
+>>>>>>> origin/main
   loadSales() {
     if (!this.startDate || !this.endDate) {
       this.error = 'Please select start and end dates for Sales report';
@@ -189,6 +209,10 @@ this.http.get<any>(
       });
   }
 
+<<<<<<< HEAD
+=======
+  /* ========== Orders ========== */
+>>>>>>> origin/main
   loadOrders() {
     this.loading = true;
 this.http.get<any>(
@@ -205,12 +229,20 @@ loadPastOrders() {
 
   let url = `${this.api}/order/manager/reports/past-orders?restaurantId=${this.restaurantId}`;
 
+<<<<<<< HEAD
 
+=======
+  // 🔥 Add Order Type Filter
+>>>>>>> origin/main
   if (this.orderTypeFilter) {
     url += `&orderType=${encodeURIComponent(this.orderTypeFilter)}`;
   }
 
+<<<<<<< HEAD
 
+=======
+  // 🔥 Add Date Filter
+>>>>>>> origin/main
   if (this.dateFilterMode !== 'all' && this.startDate && this.endDate) {
     url += `&startDate=${encodeURIComponent(this.startDate)}&endDate=${encodeURIComponent(this.endDate)}`;
   }
@@ -231,6 +263,11 @@ loadPastOrders() {
 
         return {
           ...o,
+<<<<<<< HEAD
+=======
+
+          // 🔥 Ensure Order Type Exists
+>>>>>>> origin/main
           orderType: o.orderType ?? 'Unknown',
 
           total,
@@ -263,7 +300,11 @@ paymentMethod: o.paymentMethod?.trim() || 'Pending',
     complete: () => this.loading = false
   });
 }
+<<<<<<< HEAD
 
+=======
+  /* ========== Items ========== */
+>>>>>>> origin/main
   loadItems() {
     if (!this.startDate || !this.endDate) {
       this.error = 'Please select start and end dates for Items report';
@@ -279,6 +320,10 @@ paymentMethod: o.paymentMethod?.trim() || 'Pending',
       });
   }
 
+<<<<<<< HEAD
+=======
+  /* ========== Categories ========== */
+>>>>>>> origin/main
   loadCategories() {
     this.loading = true;
     this.http.get<any[]>(`${this.api}/order/manager/reports/categories?restaurantId=${this.restaurantId}`)
@@ -289,6 +334,10 @@ paymentMethod: o.paymentMethod?.trim() || 'Pending',
       });
   }
 
+<<<<<<< HEAD
+=======
+  /* ========== CSV Export ========== */
+>>>>>>> origin/main
   exportToCSV(data: any[], filename: string) {
     if (!data || !data.length) return;
 

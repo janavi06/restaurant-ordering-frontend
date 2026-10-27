@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+/* Pending Payments Minimalist Pastel Style */
+>>>>>>> origin/main
 
 .table {
   width: 100%;
   border-collapse: collapse;
+<<<<<<< HEAD
   overflow: hidden;
   border-radius: 10px;
   background: #f9fcff;
@@ -19,15 +24,39 @@
   font-size: 13px;
   font-weight: 600;
   text-align: left;
+=======
+  font-size: 14px;
+  background: #f9fcff; /* light pastel blue background */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.table thead {
+  background: #e6f2fb; /* soft blue header */
+}
+
+.table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 600;
+  color: #2a3f54; /* subtle blue-gray text */
+  font-size: 13px;
+>>>>>>> origin/main
 }
 
 .table td {
   padding: 10px 14px;
+<<<<<<< HEAD
   border-top: 1px solid #eef5fa;
+=======
+  border-top: 1px solid #eef5fa; /* very soft border */
+>>>>>>> origin/main
   color: #3a4d60;
 }
 
 .table tbody tr:hover {
+<<<<<<< HEAD
   background: #f0f7fc;
 }
 
@@ -59,14 +88,104 @@
 .btn-success {
   border: none;
   background: #63b3ed;
+=======
+  background: #f0f7fc; /* gentle hover */
+  transition: 0.2s ease-in-out;
+}
+
+ul {
+  padding-left: 16px;
+  margin: 0;
+  font-size: 13px;
+  color: #4a6276;
+}
+
+.alert {
+  background: #ffe6e6;
+  color: #b52d2d;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.btn-success {
+  background: #63b3ed; /* pastel blue */
+  border: none;
+>>>>>>> origin/main
   color: #fff;
 }
 
 .btn-success:hover {
+<<<<<<< HEAD
   background: #4299e1;
 }
 
 .text-muted {
   color: #7a8fa6 !important;
   font-size: 14px;
+=======
+  background: #4299e1; /* deeper pastel blue on hover */
+}
+
+.text-muted {
+  font-size: 14px;
+  color: #7a8fa6 !important;
+}
+.payment-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.payment-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(99, 179, 237, 0.25); /* soft pastel blue overlay */
+  backdrop-filter: blur(2px);
+}
+
+.payment-modal {
+  position: relative;
+  background: #f9fcff; /* light pastel background */
+  width: 380px;
+  max-width: 95vw;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(99, 179, 237, 0.25); /* blue shadow tint */
+  z-index: 10000;
+  font-family: 'Inter', sans-serif;
+  color: #2a3f54;
+}
+
+/* Badge with pastel styling */
+.badge {
+  background: #63b3ed; /* pastel blue */
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(99, 179, 237, 0.25);
+}
+
+/* Optional subtle hover effect for modal */
+.payment-modal:hover {
+  box-shadow: 0 10px 28px rgba(99, 179, 237, 0.35);
+  transition: 0.2s ease-in-out;
+>>>>>>> origin/main
 }

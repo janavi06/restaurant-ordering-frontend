@@ -5,6 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router'; 
 import { AuthService } from '../services/auth.service'; 
+<<<<<<< HEAD
+=======
+import { InventoryManagementComponent } from '../inventory-management/inventory-management.component';
+>>>>>>> origin/main
 import { ManagerReportsComponent } from '../manager-reports/manager-reports.component';
 
 import jsPDF from 'jspdf';
@@ -14,7 +18,11 @@ import jsPDF from 'jspdf';
 @Component({
   selector: 'app-manager',
   standalone: true,
+<<<<<<< HEAD
   imports: [CommonModule, FormsModule, ManagerReportsComponent],
+=======
+  imports: [CommonModule, FormsModule,  InventoryManagementComponent,    ManagerReportsComponent],
+>>>>>>> origin/main
       encapsulation: ViewEncapsulation.None,   
   templateUrl: './manager.component.html',
   styleUrls: ['./manager.component.css'],
@@ -27,9 +35,30 @@ export class ManagerComponent implements OnInit {
   
 // readonly OFFER_API = `${environment.apiUrl}/offer`;
 
+<<<<<<< HEAD
   activeMenuTab: 'items' | 'categories' | 'subcategories' = 'items';
 
 
+=======
+  readonly EXPENSE_API = `${environment.apiUrl}/expense`;
+
+  activeMenuTab: 'items' | 'categories' | 'subcategories' = 'items';
+
+
+  expenses: any[] = [];
+  expenseSummary: any[] = [];
+  budgets: any[] = [];
+  expenseCategories = ['Food', 'Beverage', 'Labor', 'Utilities', 'Rent', 'Supplies', 'Marketing', 'Maintenance', 'Insurance', 'Other'];
+  
+
+  
+  expenseBreakdownChartData: any = {};
+//   showOfferModal: boolean = false;
+
+ 
+  newExpense: any = {};
+  newBudget: any = {};
+>>>>>>> origin/main
 
   activeOrders: any[] = [];
   inProgressOrders: any[] = [];
@@ -44,7 +73,11 @@ export class ManagerComponent implements OnInit {
 
 restaurantId: number = 0; 
 
+<<<<<<< HEAD
 selectedSection: 'dashboard' | 'history'|'editMenu' |'reports' | 'settings'|  'offers' = 'dashboard';  isSidebarOpen = false;
+=======
+selectedSection: 'dashboard' | 'history' | 'inventory'|'editMenu' |'reports' | 'settings'|   'expenses' |  'offers' = 'dashboard';  isSidebarOpen = false;
+>>>>>>> origin/main
 
   products: any[] = [];
   filteredProducts: any[] = [];
@@ -142,6 +175,11 @@ private initializeComponent(): void {
     this.loadSubCategories();
     this.loadCategories();
     this.loadProducts();
+<<<<<<< HEAD
+=======
+
+    this.loadExpenseData();
+>>>>>>> origin/main
 //     this.loadOffersData();
 
     
@@ -153,6 +191,7 @@ private initializeComponent(): void {
     this.router.navigate(['/login']);
   }
 
+<<<<<<< HEAD
 
 
 
@@ -170,6 +209,26 @@ private initializeComponent(): void {
 //       error: (err) => console.error('Error loading notifications:', err)
 //     });
 //   }
+=======
+viewOrderDetails(orderID: number) {
+}
+
+
+  loadOperationalKpis(): void {
+    this.http.get<any>(`${this.ORDER_API}/dashboard/kitchen-backlog?restaurantId=${this.restaurantId}`).subscribe({
+      next: (res) => this.kitchenBacklogItems = res.totalPendingItems,
+      error: (err) => console.error('Error loading kitchen backlog:', err)
+    });
+
+    this.http.get<any[]>(`${this.ORDER_API}/waiter/notifications?restaurantId=${this.restaurantId}`).subscribe({
+      next: (res) => this.unacknowledgedNotifications = res.map(n => ({
+        ...n,
+        timeElapsed: this.getTimeInStatus(new Date(n.createdAt))
+      })),
+      error: (err) => console.error('Error loading notifications:', err)
+    });
+  }
+>>>>>>> origin/main
 
   loadWaiterRequests(): void {
     this.http.get<any>(`${this.ORDER_API}/waiter-requests?restaurantId=${this.restaurantId}`).subscribe({
@@ -304,7 +363,13 @@ reprintBill(orderID: number) {
   window.open(`${this.ORDER_API}/${orderID}/bill`, '_blank');
 }
 
+<<<<<<< HEAD
 
+=======
+viewOrderTimeline(orderID: number) {
+
+}
+>>>>>>> origin/main
 
 
 Math = Math;
@@ -697,6 +762,51 @@ acknowledgeWaiterRequest(id: number): void {
   }
 
 
+<<<<<<< HEAD
+=======
+  loadExpenseData(): void {
+    this.http.get<any>(`${this.EXPENSE_API}?restaurantId=${this.restaurantId}`).subscribe({
+      next: (res) => {
+        this.expenses = res.expenses;
+        this.expenseSummary = res.summary;
+      },
+      error: (err) => console.error('Error loading expenses:', err)
+    });
+
+    const today = new Date();
+    this.http.get<any>(`${this.EXPENSE_API}/budgets?restaurantId=${this.restaurantId}&year=${today.getFullYear()}&month=${today.getMonth() + 1}`).subscribe({
+      next: (res) => this.budgets = res.data,
+      error: (err) => console.error('Error loading budgets:', err)
+    });
+  }
+
+  addExpense(): void {
+    this.http.post(`${this.EXPENSE_API}`, {
+      ...this.newExpense,
+      restaurantId: this.restaurantId
+    }).subscribe({
+      next: () => {
+        this.loadExpenseData();
+        this.newExpense = {};
+      },
+      error: (err) => console.error('Error adding expense:', err)
+    });
+  }
+
+  saveBudget(): void {
+    this.http.post(`${this.EXPENSE_API}/budgets`, {
+      ...this.newBudget,
+      restaurantId: this.restaurantId
+    }).subscribe({
+      next: () => {
+        this.loadExpenseData();
+        this.newBudget = {};
+      },
+      error: (err) => console.error('Error saving budget:', err)
+    });
+  }
+
+>>>>>>> origin/main
   showModal(modalId: string): void {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -723,6 +833,52 @@ acknowledgeWaiterRequest(id: number): void {
     }
   }
 
+<<<<<<< HEAD
+=======
+ 
+
+
+
+
+
+
+
+
+// Expense Management Methods
+deleteExpense(expenseID: number): void {
+  if (confirm('Are you sure you want to delete this expense?')) {
+    this.http.delete(`${this.EXPENSE_API}/${expenseID}?restaurantId=${this.restaurantId}`)
+      .subscribe({
+        next: (res: any) => {
+          this.loadExpenseData();
+          console.log('Expense deleted successfully:', res);
+        },
+        error: (err) => {
+          console.error('Error deleting expense:', err);
+          alert('Failed to delete expense');
+        }
+      });
+  }
+}
+
+
+  // NEW: Export Methods
+  exportExpenseReport(): void {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+    this.http.get(`${this.EXPENSE_API}/reports?restaurantId=${this.restaurantId}&startDate=${startDate.toISOString()}&endDate=${new Date().toISOString()}`, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `expense-report-${new Date().toISOString().slice(0,10)}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => console.error('Error exporting expense report:', err)
+    });
+  }
+>>>>>>> origin/main
 
   exportStaffSchedule(): void {
     // Implement PDF export for staff schedule

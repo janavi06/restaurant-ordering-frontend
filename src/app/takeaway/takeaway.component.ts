@@ -24,6 +24,10 @@ export class TakeawayComponent implements OnInit {
   products: any[] = [];
   cart: any[] = [];
 
+<<<<<<< HEAD
+=======
+  /* ================= PAYMENT STATE ================= */
+>>>>>>> origin/main
 
   showPaymentModal = false;
   selectedOrder: any = null;
@@ -41,6 +45,11 @@ export class TakeawayComponent implements OnInit {
     this.loadTakeawayOrders();
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= LIST ================= */
+
+>>>>>>> origin/main
   loadTakeawayOrders(): void {
     this.http.get<any>(
       `${this.API}/order/takeaway?restaurantId=${this.restaurantId}`
@@ -49,6 +58,11 @@ export class TakeawayComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= PAYMENT FLOW ================= */
+
+>>>>>>> origin/main
   openTakeawayPayment(order: any) {
     this.selectedOrder = order;
     this.paymentMode = 'Cash';
@@ -67,16 +81,28 @@ export class TakeawayComponent implements OnInit {
 
     const remaining = this.selectedOrder.remainingAmount;
 
+<<<<<<< HEAD
+=======
+    /* ================= FULL CASH ================= */
+>>>>>>> origin/main
     if (this.paymentMode === 'Cash') {
       this.processPayment('Cash', remaining);
       return;
     }
 
+<<<<<<< HEAD
+=======
+    /* ================= FULL UPI ================= */
+>>>>>>> origin/main
     if (this.paymentMode === 'UPI') {
       this.processPayment('UPI', remaining);
       return;
     }
 
+<<<<<<< HEAD
+=======
+    /* ================= PARTIAL ================= */
+>>>>>>> origin/main
     if (this.paymentMode === 'Partial') {
 
       if (this.partialCashAmount <= 0 || this.partialCashAmount >= remaining) {
@@ -85,11 +111,20 @@ export class TakeawayComponent implements OnInit {
 
       const upiAmount = remaining - this.partialCashAmount;
 
+<<<<<<< HEAD
+=======
+      // 1️⃣ Cash Payment
+>>>>>>> origin/main
       this.http.put(
         `${this.API}/order/${this.selectedOrder.orderID}/takeaway/pay-and-serve?restaurantId=${this.restaurantId}`,
         { method: 'Cash', amount: this.partialCashAmount }
       ).subscribe({
         next: () => {
+<<<<<<< HEAD
+=======
+
+          // 2️⃣ UPI Payment
+>>>>>>> origin/main
           this.http.put(
             `${this.API}/order/${this.selectedOrder.orderID}/takeaway/pay-and-serve?restaurantId=${this.restaurantId}`,
             { method: 'UPI', amount: upiAmount }
@@ -117,6 +152,10 @@ export class TakeawayComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= CREATE ================= */
+>>>>>>> origin/main
 
   startNewOrder(): void {
     this.mode = 'create';
@@ -136,6 +175,10 @@ export class TakeawayComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= CUSTOMIZATION ================= */
+>>>>>>> origin/main
 
   openProductCustomization(product: any): void {
 
@@ -159,6 +202,10 @@ export class TakeawayComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= CART ================= */
+>>>>>>> origin/main
 
   addToCart(product: any, customizationIds: number[]): void {
 
@@ -201,6 +248,10 @@ export class TakeawayComponent implements OnInit {
     return this.cart.reduce((sum, item) => sum + item.total, 0);
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= PLACE ORDER ================= */
+>>>>>>> origin/main
 
   placeOrder(): void {
 
@@ -223,6 +274,10 @@ export class TakeawayComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  /* ================= UI ================= */
+>>>>>>> origin/main
 
   getStatusBadge(status: string): string {
     const map: any = {

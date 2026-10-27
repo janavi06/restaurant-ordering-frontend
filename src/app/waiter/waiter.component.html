@@ -13,7 +13,14 @@
         Pending Payments
         <span *ngIf="pendingPayments.length" class="badge">({{ pendingPayments.length }})</span>
       </li> -->
+<<<<<<< HEAD
    
+=======
+      <li (click)="selectedSection = 'offers'"
+    [class.active]="selectedSection === 'offers'">
+  Offers
+</li>
+>>>>>>> origin/main
 <li (click)="selectedSection = 'takeaway'"
     [class.active]="selectedSection === 'takeaway'">
   Takeaway Orders
@@ -164,6 +171,12 @@
     </div>
 
 
+<<<<<<< HEAD
+=======
+    <div *ngIf="selectedSection === 'offers'" class="offers-embedded">
+  <app-offers [restaurantId]="restaurantId"></app-offers>
+</div>
+>>>>>>> origin/main
 
     <section *ngIf="selectedSection === 'orders'" class="waiter-table-layout">
 
