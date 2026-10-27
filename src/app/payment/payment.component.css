@@ -1,0 +1,59 @@
+
+.payment-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-title {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.payment-text {
+  color: #555;
+  font-size: 16px;
+}
+
+.qr-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.qr-code {
+  width: 180px;
+  height: 180px;
+  border: 5px solid #fff;
+  border-radius: 10px;
+}
+
+.upi-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.upi-id {
+  color: #007bff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pay-button:hover {
+  background: #28a745;
+  color: #fff;
+}

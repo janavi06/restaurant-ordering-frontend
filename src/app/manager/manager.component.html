@@ -1,0 +1,715 @@
+<div class="manager-wrapper">
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <div class="sidebar-header">
+      <h2>Manager Panel</h2>
+    </div>
+    <ul class="sidebar-menu">
+ 
+
+      <li (click)="selectSection('editMenu')" [class.active]="selectedSection === 'editMenu'">
+        <i class="bi bi-pencil-square"></i> Edit Menu
+      </li>
+    
+<li
+  (click)="selectSection('reports')"
+  [class.active]="selectedSection === 'reports'">
+  <i class="bi bi-bar-chart-line"></i> Reports
+</li>
+
+
+<li (click)="selectSection('offers')" [class.active]="selectedSection === 'offers'">
+  <i class="bi bi-tag-fill"></i> Offers & Discounts
+</li>
+
+
+    </ul>
+  </aside>
+
+  <main class="main-content" [class.sidebar-open]="isSidebarOpen">
+    <header class="dashboard-header">
+      <button class="sidebar-toggle" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <h1>Manager Dashboard</h1>
+    </header>
+
+
+
+<app-manager-reports
+  *ngIf="selectedSection === 'reports'"
+  [restaurantId]="restaurantId">
+</app-manager-reports>
+
+
+<!-- OFFERS & DISCOUNTS SECTION -->
+<!-- <section *ngIf="selectedSection === 'offers'" class="offers-section">
+  <div class="row mb-4">
+    <div class="col">
+      <h2>Offers & Discounts</h2>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="openOfferModal()">
+        <i class="bi bi-plus-circle"></i> Create Offer
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Active Offers</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Offer Code</th>
+                  <th>Description</th>
+                  <th>Discount</th>
+                  <th>Min. Bill</th>
+                  <th>Valid From</th>
+                  <th>Valid To</th>
+                  <th>Auto Apply</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let offer of activeOffers">
+                  <td>
+                    <strong>{{ offer.code || 'Auto' }}</strong>
+                  </td>
+                  <td>{{ offer.description }}</td>
+                  <td>
+                    <span *ngIf="offer.discountAmount" class="text-success">
+                      ₹{{ offer.discountAmount }} OFF
+                    </span>
+                    <span *ngIf="offer.discountPercent" class="text-success">
+                      {{ offer.discountPercent }}% OFF
+                    </span>
+                  </td>
+                  <td>{{ offer.minBillAmount | currency:'INR' }}</td>
+                  <td>{{ offer.validFrom | date:'shortDate' }}</td>
+                  <td>{{ offer.validTo | date:'shortDate' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="offer.autoApply ? 'bg-success' : 'bg-secondary'">
+                      {{ offer.autoApply ? 'Yes' : 'No' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-success">Active</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteOffer(offer.offerID)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="activeOffers.length === 0">
+                  <td colspan="9" class="text-center text-muted py-4">
+                    No active offers. Create your first offer!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Offer Performance</h5>
+        </div>
+        <div class="card-body">
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Offer Statistics</h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-6 mb-3">
+              <h3 class="text-primary">{{ offerStats.totalOffers }}</h3>
+              <p class="text-muted mb-0">Total Offers</p>
+            </div>
+            <div class="col-6 mb-3">
+              <h3 class="text-success">{{ offerStats.activeOffers }}</h3>
+              <p class="text-muted mb-0">Active Offers</p>
+            </div>
+            <div class="col-6">
+              <h3 class="text-info">{{ offerStats.totalDiscounts | currency:'INR' }}</h3>
+              <p class="text-muted mb-0">Total Discounts</p>
+            </div>
+            <div class="col-6">
+              <h3 class="text-warning">{{ offerStats.ordersWithOffers }}</h3>
+              <p class="text-muted mb-0">Orders with Offers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+
+
+
+
+  
+
+<!-- EDIT MENU -->
+
+<section *ngIf="selectedSection === 'editMenu'" class="edit-menu-section">
+  <div class="container-fluid">
+    
+    <!-- Tabs for Menu Items, Categories, and Subcategories -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <ul class="nav nav-tabs" id="menuManagementTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="items-tab" data-bs-toggle="tab" 
+                    data-bs-target="#items" type="button" role="tab" 
+                    (click)="activeMenuTab = 'items'"
+                    [class.active]="activeMenuTab === 'items'">
+              Menu Items
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="categories-tab" data-bs-toggle="tab" 
+                    data-bs-target="#categories" type="button" role="tab"
+                    (click)="activeMenuTab = 'categories'"
+                    [class.active]="activeMenuTab === 'categories'">
+              Categories
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="subcategories-tab" data-bs-toggle="tab" 
+                    data-bs-target="#subcategories" type="button" role="tab"
+                    (click)="activeMenuTab = 'subcategories'"
+                    [class.active]="activeMenuTab === 'subcategories'">
+              Subcategories
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-content" id="menuManagementTabsContent">
+      
+      <!-- Menu Items Tab -->
+      <div class="tab-pane fade show" 
+           [class.show]="activeMenuTab === 'items'" 
+           [class.active]="activeMenuTab === 'items'"
+           id="items" role="tabpanel">
+        
+        <div class="row align-items-center justify-content-between mb-3">
+          <div class="col-12 col-md-auto mb-2">
+            <button class="btn btn-primary w-100 w-md-auto" (click)="openAddModal()">
+              <i class="bi bi-plus-lg me-2"></i>Add New Item
+            </button>
+          </div>
+
+          <div class="col-12 col-md flex-grow-1">
+            <div class="search-wrapper w-100">
+              <input type="text" 
+                     class="form-control"
+                     placeholder="Search items by name"
+                     [(ngModel)]="searchText"
+                     (ngModelChange)="onSearchChange()">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Price</th>
+                <th>Available</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of filteredProducts">
+                <td>{{ p.productName }}</td>
+                <td>{{ getCategoryName(p.categoryID) }}</td>
+                <td>{{ getSubcategoryName(p.subCategoryID) }}</td>
+                <td>₹{{ p.price }}</td>
+                <td>
+                  <label class="toggle-switch">
+                    <input type="checkbox" [checked]="p.isAvailable" (change)="toggleAvailability(p)" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-sm edit-btn me-1" (click)="openEditModal(p)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm delete-btn" (click)="deleteProduct(p.productID)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="filteredProducts.length === 0">
+                <td colspan="6" class="text-center py-4">
+                  No items match your search.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Categories Tab -->
+      <div class="tab-pane fade" 
+           [class.show]="activeMenuTab === 'categories'" 
+           [class.active]="activeMenuTab === 'categories'"
+           id="categories" role="tabpanel">
+        
+        <div class="row align-items-center justify-content-between mb-3">
+          <div class="col-12 col-md-auto mb-2">
+            <button class="btn btn-primary w-100 w-md-auto" (click)="openAddCategoryModal()">
+              <i class="bi bi-plus-lg me-2"></i>Add Category
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Items Count</th>
+                <th>Available</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of categories">
+                <td>{{ category.categoryName }}</td>
+                <td class="truncate-cell text-truncate">{{ category.categoryDescription || '—' }}</td>
+                <td>
+                  <span class="badge bg-primary">
+                    {{ getCategoryItemCount(category.categoryID) }}
+                  </span>
+                </td>
+                <td>
+                  <label class="toggle-switch">
+                    <input type="checkbox" [checked]="category.isAvailable" 
+                           (change)="toggleCategoryAvailability(category)" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-sm edit-btn me-1" (click)="openEditCategoryModal(category)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm delete-btn" 
+                          (click)="deleteCategory(category.categoryID)"
+                          [disabled]="getCategoryItemCount(category.categoryID) > 0">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="categories.length === 0">
+                <td colspan="5" class="text-center py-4">
+                  No categories found. Add your first category!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subcategories Tab -->
+      <div class="tab-pane fade" 
+           [class.show]="activeMenuTab === 'subcategories'" 
+           [class.active]="activeMenuTab === 'subcategories'"
+           id="subcategories" role="tabpanel">
+        
+        <div class="row align-items-center justify-content-between mb-3">
+          <div class="col-12 col-md-auto mb-2">
+            <button class="btn btn-primary w-100 w-md-auto" (click)="openAddSubcategoryModal()">
+              <i class="bi bi-plus-lg me-2"></i>Add Subcategory
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Items Count</th>
+                <th>Available</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subcategory of subcategories">
+                <td>{{ subcategory.subCategoryName }}</td>
+                <td>{{ getCategoryName(subcategory.categoryID) }}</td>
+                <td class="truncate-cell text-truncate">{{ subcategory.subCategoryDescription || '—' }}</td>
+                <td>
+                  <span class="badge bg-primary">
+                    {{ getSubcategoryItemCount(subcategory.subCategoryID) }}
+                  </span>
+                </td>
+                <td>
+                  <label class="toggle-switch">
+                    <input type="checkbox" [checked]="subcategory.isAvailable" 
+                           (change)="toggleSubcategoryAvailability(subcategory)" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-sm edit-btn me-1" (click)="openEditSubcategoryModal(subcategory)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm delete-btn" 
+                          (click)="deleteSubcategory(subcategory.subCategoryID)"
+                          [disabled]="getSubcategoryItemCount(subcategory.subCategoryID) > 0">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="subcategories.length === 0">
+                <td colspan="6" class="text-center py-4">
+                  No subcategories found. Add your first subcategory!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- SETTINGS -->
+    <section *ngIf="selectedSection==='settings'">
+      <h1>Settings</h1>
+      <p>Manage system preferences and account settings here.</p>
+    </section> 
+  </main>
+
+<!-- Category Modal -->
+<div class="modal-overlay" *ngIf="showCategoryModal" (click)="closeCategoryModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ isEditCategoryMode ? 'Edit Category' : 'Add New Category' }}</h5>
+      <button type="button" class="btn-close" (click)="closeCategoryModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <form #categoryForm="ngForm">
+        <div class="mb-3">
+          <label class="form-label">Category Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" 
+                 [(ngModel)]="modalCategory.categoryName" 
+                 name="categoryName" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="3"
+                    [(ngModel)]="modalCategory.categoryDescription" 
+                    name="categoryDescription"></textarea>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" 
+                 [(ngModel)]="modalCategory.isAvailable" 
+                 name="isAvailable">
+          <label class="form-check-label">Available</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeCategoryModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" 
+              (click)="isEditCategoryMode ? updateCategory() : addCategory()"
+              [disabled]="!categoryForm.form.valid || !modalCategory.categoryName">
+        {{ isEditCategoryMode ? 'Save Changes' : 'Add Category' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Subcategory Modal -->
+<div class="modal-overlay" *ngIf="showSubcategoryModal" (click)="closeSubcategoryModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ isEditSubcategoryMode ? 'Edit Subcategory' : 'Add New Subcategory' }}</h5>
+      <button type="button" class="btn-close" (click)="closeSubcategoryModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <form #subcategoryForm="ngForm">
+        <div class="mb-3">
+          <label class="form-label">Subcategory Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" 
+                 [(ngModel)]="modalSubcategory.subCategoryName" 
+                 name="subCategoryName" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Category <span class="text-danger">*</span></label>
+          <select class="form-select" 
+                  [(ngModel)]="modalSubcategory.categoryID" 
+                  name="categoryID" required>
+            <option [ngValue]="null" disabled>Select a Category</option>
+            <option *ngFor="let cat of categories" [ngValue]="cat.categoryID">
+              {{ cat.categoryName }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="3"
+                    [(ngModel)]="modalSubcategory.subCategoryDescription" 
+                    name="subCategoryDescription"></textarea>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" 
+                 [(ngModel)]="modalSubcategory.isAvailable" 
+                 name="isAvailable">
+          <label class="form-check-label">Available</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeSubcategoryModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" 
+              (click)="isEditSubcategoryMode ? updateSubcategory() : addSubcategory()"
+              [disabled]="!subcategoryForm.form.valid || !modalSubcategory.subCategoryName || !modalSubcategory.categoryID">
+        {{ isEditSubcategoryMode ? 'Save Changes' : 'Add Subcategory' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal fade" [class.show]="isModalOpen" [style.display]="isModalOpen ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEditMode ? 'Edit Menu Item' : 'Add New Item' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <!-- Added template reference variable and validation checks -->
+      <form (ngSubmit)="isEditMode ? updateProductModal() : addProductModal()" #productForm="ngForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Item Name <span class="text-danger">*</span></label>
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="modalProduct.productName"
+                   name="productName"
+                   required>
+          </div>
+
+          <div class="row g-3">
+            <!-- Category Dropdown -->
+            <div class="mb-3">
+              <label class="form-label">Category <span class="text-danger">*</span></label>
+              <select class="form-select"
+                      [(ngModel)]="modalProduct.categoryID"
+                      name="categoryID"
+                      required
+                      (change)="modalProduct.subCategoryID = null">
+                <option [ngValue]="null" disabled>Select a Category</option>
+                <option *ngFor="let cat of categories" [ngValue]="cat.categoryID">
+                  {{ cat.categoryName }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Subcategory Dropdown -->
+            <div class="mb-3">
+              <label class="form-label">Subcategory</label>
+              <select class="form-select"
+                      [(ngModel)]="modalProduct.subCategoryID"
+                      name="subCategoryID">
+                <option [ngValue]="null">None</option>
+                <option *ngFor="let sub of getSubcategoriesByCategory(modalProduct.categoryID)"
+                [ngValue]="sub.subCategoryID">
+          {{ sub.subCategoryName }}
+        </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Price <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number"
+                       class="form-control"
+                       [(ngModel)]="modalProduct.price"
+                       name="price"
+                       required
+                       min="0.01"
+                       step="0.01">
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control"
+                      rows="3"
+                      [(ngModel)]="modalProduct.productDescription"
+                      name="productDescription"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Item Image</label>
+            <input type="file" class="form-control" (change)="handleImageUpload($event)">
+            <small class="text-muted">Recommended size: 500×500px, JPG/PNG</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <!-- Disabled state based on form validity -->
+          <button type="submit" 
+                  class="btn btn-primary"
+                  [disabled]="productForm.invalid">
+            {{ isEditMode ? 'Save Changes' : 'Add Item' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>    
+
+
+
+<!-- Bill Preview Modal -->
+<div class="modal fade show" tabindex="-1" [ngStyle]="{ display: showBillModal ? 'block' : 'none' }" *ngIf="showBillModal">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bill Preview</h5>
+        <button type="button" class="btn-close" (click)="closeBillModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="billHtmlContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showBillModal"></div>   
+
+
+<!-- 
+<div class="modal-backdrop fade show" *ngIf="showOfferModal" (click)="closeOfferModal()"></div>
+<div class="modal fade" [class.show]="showOfferModal" [style.display]="showOfferModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Offer</h5>
+        <button type="button" class="btn-close" (click)="closeOfferModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form #offerForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label">Offer Type *</label>
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="offerType" id="percent" 
+                     [(ngModel)]="newOffer.offerType" value="percent" required (change)="onOfferTypeChange()">
+              <label class="btn btn-outline-primary" for="percent">Percentage</label>
+              
+              <input type="radio" class="btn-check" name="offerType" id="amount" 
+                     [(ngModel)]="newOffer.offerType" value="amount" required (change)="onOfferTypeChange()">
+              <label class="btn btn-outline-primary" for="amount">Fixed Amount</label>
+            </div>
+          </div>
+
+          <div class="mb-3" *ngIf="newOffer.offerType === 'percent'">
+            <label class="form-label">Discount Percentage *</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="newOffer.discountPercent" 
+                     name="discountPercent" min="1" max="100" step="1" required>
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+
+          <div class="mb-3" *ngIf="newOffer.offerType === 'amount'">
+            <label class="form-label">Discount Amount *</label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" class="form-control" [(ngModel)]="newOffer.discountAmount" 
+                     name="discountAmount" min="1" step="1" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Offer Code</label>
+            <input type="text" class="form-control" [(ngModel)]="newOffer.code" name="code"
+                   placeholder="Leave empty for auto-apply offers"
+                   (input)="onOfferCodeChange()">
+            <small class="text-muted">If no code is provided, offer will be auto-applied to eligible bills</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description *</label>
+            <textarea class="form-control" [(ngModel)]="newOffer.description" name="description" 
+                      rows="2" required placeholder="E.g., Weekend Special, Festival Offer..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Minimum Bill Amount</label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" class="form-control" [(ngModel)]="newOffer.minBillAmount" 
+                     name="minBillAmount" min="0" step="1" value="0">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Valid From *</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="newOffer.validFrom" 
+                       name="validFrom" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Valid To *</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="newOffer.validTo" 
+                       name="validTo" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-check form-switch">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="newOffer.autoApply" 
+                   name="autoApply" id="autoApply">
+            <label class="form-check-label" for="autoApply">Auto-apply to eligible bills</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeOfferModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="createOffer()" 
+                [disabled]="!isOfferFormValid()">Create Offer</button>
+      </div>
+    </div>
+  </div>
+</div> -->

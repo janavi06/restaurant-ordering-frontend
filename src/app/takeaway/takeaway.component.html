@@ -1,0 +1,177 @@
+<div class="takeaway-container">
+
+<div *ngIf="mode === 'list'">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Takeaway Orders</h5>
+    <button class="btn btn-primary btn-sm" (click)="startNewOrder()">
+      + New Order
+    </button>
+  </div>
+
+  <div *ngIf="orders.length === 0" class="text-muted text-center py-4">
+    No takeaway orders available.
+  </div>
+
+  <div *ngFor="let order of orders" class="card mb-3 shadow-sm">
+
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <strong>Order #{{ order.orderNumber || order.orderID }}</strong>
+          <span class="badge ms-2" [ngClass]="getStatusBadge(order.orderStatus)">
+            {{ order.orderStatus }}
+          </span>
+        </div>
+
+        <div class="fw-bold text-primary">
+          ₹{{ order.totalAmount | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <ul class="list-unstyled mb-2">
+        <li *ngFor="let item of order.items" class="mb-2">
+
+          <div class="d-flex justify-content-between">
+            <span>
+              {{ item.productName }} × {{ item.quantity }}
+            </span>
+            <span>
+              ₹{{ item.lineTotal | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <div *ngIf="item.customizations?.length > 0"
+               class="text-muted small ms-3">
+
+            <div *ngFor="let c of item.customizations">
+              + {{ c.optionName }}
+              <span *ngIf="c.price > 0">
+                (₹{{ c.price | number:'1.2-2' }})
+              </span>
+            </div>
+
+          </div>
+
+        </li>
+      </ul>
+
+      <div class="d-flex justify-content-end">
+       <button class="btn btn-primary btn-sm"
+        (click)="openTakeawayPayment(order)">
+  Pay & Serve
+</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<ng-container *ngIf="mode === 'create'">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Select Products</h4>
+    <button class="btn btn-outline-secondary btn-sm"
+            (click)="cancelCreate()">
+      Back
+    </button>
+  </div>
+
+  <div class="product-grid pb-5">
+
+    <div *ngFor="let product of products"
+         class="product-card"
+         (click)="openProductCustomization(product)">
+
+      <div class="product-name">
+        {{ product.productName }}
+      </div>
+
+      <div class="product-price">
+        ₹{{ product.price | number:'1.0-0' }}
+      </div>
+
+      <div *ngIf="getItemQuantity(product.productID) > 0"
+           class="qty-badge">
+        {{ getItemQuantity(product.productID) }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="fixed-cart"
+       *ngIf="cart.length > 0">
+
+    <div class="cart-summary">
+      <div>
+        <strong>{{ cart.length }} Items</strong>
+      </div>
+
+      <div class="cart-total">
+        ₹{{ getCartTotal() | number:'1.2-2' }}
+      </div>
+
+      <button class="btn btn-light btn-sm"
+              (click)="placeOrder()">
+        Place Order
+      </button>
+    </div>
+
+  </div>
+
+</ng-container>
+
+<div class="modal-backdrop" *ngIf="showPaymentModal">
+  <div class="payment-modal">
+
+    <h5 class="mb-3">Takeaway Payment</h5>
+
+    <div class="mb-3">
+      <strong>Total Remaining:</strong>
+      ₹{{ selectedOrder?.remainingAmount | number:'1.2-2' }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Payment Type</label>
+      <select class="form-select" [(ngModel)]="paymentMode">
+        <option value="Cash">Cash (Full)</option>
+        <option value="UPI">UPI (Full)</option>
+        <option value="Partial">Partial (Cash + UPI)</option>
+      </select>
+    </div>
+
+    <div *ngIf="paymentMode === 'Partial'" class="mb-3">
+
+      <label class="form-label">Cash Amount</label>
+      <input type="number"
+             class="form-control"
+             [(ngModel)]="partialCashAmount"
+             [max]="selectedOrder?.remainingAmount"
+             min="1">
+
+      <div class="mt-2 text-muted small">
+        Remaining will be paid via UPI:
+        ₹{{ (selectedOrder?.remainingAmount - partialCashAmount) | number:'1.2-2' }}
+      </div>
+
+    </div>
+
+    
+    <div class="d-flex justify-content-end gap-2">
+      <button class="btn btn-secondary btn-sm"
+              (click)="closePaymentModal()">
+        Cancel
+      </button>
+
+      <button class="btn btn-success btn-sm"
+              (click)="confirmTakeawayPayment()">
+        Confirm Payment
+      </button>
+    </div>
+
+  </div>
+</div>
+</div>

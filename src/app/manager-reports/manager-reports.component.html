@@ -1,0 +1,256 @@
+<div class="reports-container">
+
+  <div class="reports-navbar">
+    <button (click)="setSection('overview')" [class.active]="activeSection==='overview'">Dashboard</button>
+    <button (click)="setSection('live')" [class.active]="activeSection==='live'">Live Monitor</button>
+    <button (click)="setSection('past')" [class.active]="activeSection==='past'">Order History</button>
+    <button (click)="setSection('categories')" [class.active]="activeSection==='categories'">Menu Analytics</button>
+  </div>
+
+
+  <section *ngIf="activeSection === 'overview'" class="dashboard-grid">
+<div class="filter-bar mb-3">
+  <label>Order Type:</label>
+
+  <select [(ngModel)]="orderTypeFilter" (change)="reloadActiveSection()">
+    <option value="">All</option>
+    <!-- <option value="QR">QR (Dine-In)</option> -->
+    <option value="Waiter">Dine-In</option>
+    <option value="Takeaway">Takeaway</option>
+  </select>
+</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="label">Total Revenue (Net)</span>
+        <h2 class="value">₹{{ overview.totalRevenue || 0 }}</h2>
+      </div>
+
+      <div class="stat-card">
+        <span class="label">Total Discount Given</span>
+        <h2 class="value text-danger">₹{{ overview.totalDiscount || 0 }}</h2>
+      </div>
+
+      <div class="stat-card">
+        <span class="label">Total Orders</span>
+        <h2 class="value">{{ overview.totalOrders || 0 }}</h2>
+      </div>
+
+      <div class="stat-card">
+        <span class="label">Avg. Order Value</span>
+        <h2 class="value">₹{{ overview.avgOrderValue || 0 }}</h2>
+      </div>
+    </div>
+
+    <div class="table-box">
+      <h3>Top Selling Items (After Offers)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Gross</th>
+            <th>Discount</th>
+            <th>Net</th>
+            <th>Contribution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of overview.topItems">
+            <td>{{ item.name }}</td>
+            <td>{{ item.qty }}</td>
+            <td>₹{{ item.grossRevenue }}</td>
+            <td class="text-danger">- ₹{{ item.totalDiscount }}</td>
+            <td><strong>₹{{ item.netRevenue }}</strong></td>
+            <td>
+              <span class="badge" [ngClass]="{'hot': item.contribution > 10}">
+                {{ item.contribution }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+<section *ngIf="activeSection === 'past'" class="table-box">
+
+  <div class="export-bar mb-3">
+    <button (click)="exportToCSV(pastOrders, 'past-orders')">
+      ⬇ Export CSV
+    </button>
+  </div>
+<div class="filter-bar mb-3">
+  <label>Order Type:</label>
+
+  <select [(ngModel)]="orderTypeFilter" (change)="reloadActiveSection()">
+    <option value="">All</option>
+    <option value="QR">QR (Dine-In)</option>
+    <option value="Waiter">Waiter</option>
+    <option value="Takeaway">Takeaway</option>
+  </select>
+</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Date</th>
+            <th>Type</th> 
+        <th>Table</th>
+        <th>Status</th>
+        <th>Total (Net)</th>
+        <th>Payment</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let o of pastOrders"
+          (click)="openOrderModal(o)"
+          style="cursor:pointer">
+
+        <td>#{{ o.orderNumber }}</td>
+        <td>{{ o.date | date:'short' }}</td>
+
+         <td>
+    <span class="badge"
+      [ngClass]="{
+        'takeaway-badge': o.orderType === 'Takeaway',
+        'qr-badge': o.orderType === 'QR',
+        'waiter-badge': o.orderType === 'Waiter'
+      }">
+      {{ o.orderType }}
+    </span>
+  </td>
+        <td>{{ o.table }}</td>
+        <td>{{ o.status }}</td>
+        <td><strong>₹{{ o.total }}</strong></td>
+
+        <td>
+<span class="badge"
+  [ngClass]="{
+    'cash-badge': o.paymentMethod?.toLowerCase() === 'cash',
+    'upi-badge': o.paymentMethod?.toLowerCase() === 'upi',
+    'mixed-badge': o.paymentMethod?.includes('+'),
+    'pending': o.paymentMethod?.toLowerCase() === 'pending'
+  }">
+  {{ o.paymentMethod }}
+</span>
+        </td>
+      </tr>
+
+      <tr *ngIf="!pastOrders?.length">
+        <td colspan="6" style="text-align:center;padding:20px;">
+          No orders found
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</section>
+
+<div class="modal-overlay" *ngIf="selectedOrder">
+
+  <div class="modal-box large">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4>Order #{{ selectedOrder.orderNumber }}</h4>
+      <button class="btn-close" (click)="closeOrderModal()">✖</button>
+    </div>
+
+<div class="mb-3">
+  <strong>Date:</strong> {{ selectedOrder.date | date:'short' }} <br>
+  <strong>Order Type:</strong> {{ selectedOrder.orderType }} <br>
+  <strong>Table:</strong> {{ selectedOrder.table }} <br>
+  <strong>Status:</strong> {{ selectedOrder.status }}
+</div>
+
+    <h5>Items</h5>
+    <div class="order-items mb-3">
+
+      <div *ngFor="let i of selectedOrder.items" class="item-row mb-2">
+
+        <div class="d-flex justify-content-between">
+          <div>
+            <strong>{{ i.itemName }}</strong>
+            <small *ngIf="i.offerName" class="text-success">
+              ({{ i.offerName }})
+            </small>
+          </div>
+          <div>×{{ i.quantity }}</div>
+        </div>
+
+        <small>
+          Gross: ₹{{ i.originalPrice }}
+          <span *ngIf="i.discountAmount > 0">
+            • Discount: -₹{{ i.discountAmount }}
+          </span>
+          • Net: ₹{{ i.finalPrice }}
+        </small>
+
+      </div>
+    </div>
+
+    <hr>
+
+    <h5>Bill Summary</h5>
+
+    <div class="summary-line">
+      <span>Gross Total</span>
+      <span>₹{{ selectedOrder.grossTotal }}</span>
+    </div>
+
+    <div class="summary-line text-danger">
+      <span>Total Discount</span>
+      <span>- ₹{{ selectedOrder.totalDiscount }}</span>
+    </div>
+
+    <div class="summary-line total">
+      <strong>Net Payable</strong>
+      <strong>₹{{ selectedOrder.total }}</strong>
+    </div>
+
+    <hr>
+
+<hr>
+
+<div class="summary-line total">
+  <strong>Total Paid</strong>
+  <strong>₹{{ selectedOrder.paid | number:'1.2-2' }}</strong>
+</div>
+
+<div class="summary-line text-warning" *ngIf="selectedOrder.remaining > 0">
+  <span>Remaining</span>
+  <span>₹{{ selectedOrder.remaining | number:'1.2-2' }}</span>
+</div>
+
+<div class="summary-line">
+  <span>Status</span>
+<span>{{ selectedOrder.paymentMethod }}</span>
+</div>
+
+<hr>
+
+
+<div *ngIf="selectedOrder.payments?.length">
+
+  <h6 class="mt-2">Payment Records</h6>
+
+  <div *ngFor="let p of selectedOrder.payments" class="summary-line small">
+    <span>
+      {{ p.paymentMethod }} 
+      ({{ p.channel }}) 
+      <span *ngIf="p.isPartial"> - Partial</span>
+    </span>
+    <span>₹{{ p.amount | number:'1.2-2' }}</span>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+</div>
+
+</div>

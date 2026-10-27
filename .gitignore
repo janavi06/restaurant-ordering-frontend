@@ -1,0 +1,45 @@
+
+# Build output
+/dist/
+/tmp/
+/out-tsc/
+/bazel-out/
+
+# Dependencies
+/node_modules/
+
+# Angular cache
+/.angular/cache/
+
+# Test and coverage output
+/coverage/
+/test-results/
+
+# IDEs
+.idea/
+.history/
+
+# VS Code (keep shared configuration if needed)
+/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Deployment metadata
+.vercel/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+
+frontend.zip

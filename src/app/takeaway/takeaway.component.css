@@ -1,0 +1,65 @@
+}
+
+.qty-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  padding: 4px 7px;
+  border-radius: 50%;
+  background: #0d6efd;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cart-section {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8f9fa;
+}
+
+.cart-row {
+  font-size: 14px;
+}
+
+.fixed-cart {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: #0d6efd;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.cart-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.cart-total {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.payment-modal {
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
